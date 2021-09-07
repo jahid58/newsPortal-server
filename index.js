@@ -36,7 +36,6 @@ client.connect((err) => {
     });
   });
   app.post("/addAdmin", (req, res) => {
-    console.log("fuck me");
     const admin = req.body;
     adminCollection
       .insertOne(admin)
@@ -47,7 +46,7 @@ client.connect((err) => {
   });
   app.post("/isAdmin", (req, res) => {
     const email = req.body.email;
-    console.log(email);
+
     adminCollection.find({ email: email }).toArray((err, doctors) => {
       res.send(doctors.length > 0);
     });
