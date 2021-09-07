@@ -79,6 +79,4 @@ client.connect((err) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log("this is my fuck ");
-});
+app.listen(process.env.PORT || port);
