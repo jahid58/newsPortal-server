@@ -37,7 +37,8 @@ client.connect((err) => {
     });
   });
   app.get("/description/:id", (req, res) => {
-    const id = ObjectID(req.params.id.id);
+    console.log("this is anouter fuck");
+    const id = ObjectID(req.params.id);
 
     newsCollection.find({ _id: id }).toArray((err, documents) => {
       res.send(documents[0]);
