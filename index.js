@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.static("services"));
 app.use(fileUpload());
 
-const port = 3000;
+const port = 4200;
 const uri = ` mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ntakd.mongodb.net/${process.env.DB_USER}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -29,8 +29,16 @@ client.connect((err) => {
       res.send(documents);
     });
   });
+  app.get("/category/:id", (req, res) => {
+    const category = req.params.id;
+
+    newsCollection.find({ category: category }).toArray((err, documents) => {
+      res.send(documents);
+    });
+  });
   app.get("/description/:id", (req, res) => {
-    const id = ObjectID(req.params.id);
+    const id = ObjectID(req.params.id.id);
+
     newsCollection.find({ _id: id }).toArray((err, documents) => {
       res.send(documents[0]);
     });
@@ -55,6 +63,7 @@ client.connect((err) => {
     const file = req.files.file;
     const headline = req.body.headline;
     const description = req.body.description;
+    const category = req.body.category;
 
     const newImg = file.data;
     const encImg = newImg.toString("base64");
@@ -71,7 +80,7 @@ client.connect((err) => {
     };
 
     newsCollection
-      .insertOne({ headline, description, image })
+      .insertOne({ category, headline, description, image })
       .then((result) => {
         res.send(result.insertedCount > 0);
       })
